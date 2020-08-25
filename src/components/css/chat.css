@@ -1,0 +1,53 @@
+.main {
+  padding-right: 0; /*15px in bootstrap.css*/
+  padding-left: 0;  /*idem*/
+  margin-right: auto;
+  margin-left: auto;
+  height: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  /* background-color: red; */
+}
+
+.left-panel {
+  background-color: #383838;
+  height: 95vh;
+}
+
+.middle-panel {
+  background-color: #000000;
+  height: 95vh;
+}
+
+.right-panel {
+  background-color: #383838;
+  height: 95vh;
+}
+
+.right-panel li {
+    list-style-type: none;
+}
+
+.chatbox {
+  height: 90vh;
+  background-color: #000000;
+  overflow-y: scroll;
+}
+
+.message-box{
+  height: 5vh;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.message-div {
+      color: red;
+      margin-left: 5px;
+      margin-top: 5px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+.message-div:nth-child(2n) {
+    color: yellow;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
