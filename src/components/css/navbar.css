@@ -1,0 +1,5 @@
+.header {
+  height: 5vh; /* ~ 10% of viewport height */
+  min-height: 5vh;
+  line-height: 2rem;
+}
