@@ -1,6 +1,6 @@
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const UserModel = require('../models/user.model');
+const User = require('../models/user.model');
 const path = require('path');
 const fs = require('fs');
 
@@ -17,6 +17,8 @@ var options = {
 
 // app.js will pass the global passport object here, and this function will configure it
 module.exports = (passport) => {
+
+  // console.log(options);
 
     // The JWT payload is passed into the verify callback
     passport.use(new JwtStrategy(options, (jwt_payload, done) => {

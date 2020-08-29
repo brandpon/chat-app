@@ -17,12 +17,16 @@ function NavbarComponent(props) {
     return (
 
       <Navbar className="header navbar-expand-lg navbar-light" variant="dark" bg="dark">
-        <Navbar.Brand >Icon Here</Navbar.Brand>
+        <Navbar.Brand >Chat App</Navbar.Brand>
         <Navbar.Toggle/>
           <Navbar.Collapse>
             <Nav>
                 <Nav.Link className="text-white" href='/'>Home</Nav.Link>
-                <Nav.Link className="text-white" href='/chatroom-list'>Chatrooms</Nav.Link>
+                {isAuthenticated
+                  ? <Nav.Link className="text-white" href='/chatroom-list'>Chatrooms</Nav.Link>
+                  : <>
+                  </>
+                }
             </Nav>
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">

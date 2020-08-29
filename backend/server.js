@@ -21,7 +21,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use(passport.initialize());
-// app.use(passport.session());
 
 // MongoDB stuff
 const URI = process.env.ATLAS_URI;
@@ -35,18 +34,27 @@ connection.once('open', () => {
   console.log("MongoDB database connection established successfully")
 })
 
-// Express DB API routing
-const userRouter = require('./routes/users');
-const chatroomRouter = require('./routes/chatrooms');
-app.use('/api/users', userRouter);
-app.use('/api/chatrooms', chatroomRouter);
+// Generate RSA keypair files if necessary
+const keypair = require('./generateKeypair');
+keypair.genKeyPair;
 
-// const authorizedRoute = require('./routes/authorizedRoute');
-// app.use('/protected', authorizedRoute);
+//test
+// const auth = require('./auth');
+
+// Express DB API routing
+const userRouter = require('./api/routes/users');
+const chatroomRouter = require('./api/routes/chatrooms');
+const protectedRoute = require('./api/routes/protectedRoute');
+const userOldRouter = require('./api/routes/users-old');
+
+app.use('/api/users', userRouter);
+
+// Use this middleware to protect routes
+app.use(protectedRoute);
 
 // Legacy code
-const userOldRouter = require('./routes/users-old');
-app.use('/api/users-old', userOldRouter);
+app.use('/api/chatrooms', protectedRoute, chatroomRouter);
+app.use('/api/users-old', protectedRoute, userOldRouter);
 
 // Number of users connected via SocketIO
 var numUsers = 0;
@@ -59,7 +67,6 @@ io.on('connection', (socket) => {
   console.log('Client connected from IP: ' + socket.handshake.address);
 
   socket.on('message', (data) => {
-
 
     console.log('Message: room ' + data.room + ' ' + data.username + ': ' + data.message);
     data.uuid = uuid.v4();
@@ -106,10 +113,6 @@ io.on('connection', (socket) => {
   });
 
 });
-
-// var keypair = require('keypair');
-// var pair = keypair();
-// console.log(pair);
 
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

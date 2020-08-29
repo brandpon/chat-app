@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let Chatroom = require('../models/chatroom.model');
+let Chatroom = require('../../models/chatroom.model');
 
 // Get all
 router.route('/').get((req, res) => {
