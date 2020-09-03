@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import UserListComponent from './userlist.component';
 import MessageListComponent from './message-list.component';
-import {Socket} from '../utils/socket.io'
+import SocketIO, {Socket} from '../utils/socket.io'
 import * as uuid from 'uuid';
 
 import './css/chat.css';
@@ -47,6 +47,7 @@ function ChatComponent(props) {
 
   return (
     <Container className='main' fluid>
+      <SocketIO/>
       <Row noGutters>
         <Col className="left-Col">
           <div className="left-panel">

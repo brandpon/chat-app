@@ -5,7 +5,6 @@ import NavbarComponent from "./components/navbar.component";
 import MainComponent from "./components/main.component";
 import ChatRoomComponent from "./components/chatroom.component";
 import ChatRoomListComponent from "./components/chatroom-list.component";
-import SocketIO from './utils/socket.io';
 import LoginComponent from './components/login.component';
 import RegisterComponent from './components/register.component';
 import ProtectedRoute from "./utils/protected-route";
@@ -19,7 +18,6 @@ function App() {
   return (
 
     <div>
-      <SocketIO/>
       <Router>
         <Switch>
           <AppContext.Provider value={{isAuthenticated, userHasAuthenticated}}>
@@ -28,8 +26,6 @@ function App() {
 
             <Route path="/" exact>
               <p><Link to='/main'>Main</Link></p>
-              <p><Link to='/chatroom-list'>Chatrooms</Link></p>
-              <p><Link to='/test'>test</Link></p>
             </Route>
 
             <Route path="/main"><MainComponent/></Route>

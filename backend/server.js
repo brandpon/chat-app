@@ -47,6 +47,8 @@ const chatroomRouter = require('./api/routes/chatrooms');
 const protectedRoute = require('./api/routes/protectedRoute');
 const userOldRouter = require('./api/routes/users-old');
 
+// app.use('/api', routes);
+const protectedRoute2 = require('./api/routes/protectedRoute2');
 app.use('/api/users', userRouter);
 
 // Use this middleware to protect routes
@@ -55,6 +57,9 @@ app.use(protectedRoute);
 // Legacy code
 app.use('/api/chatrooms', protectedRoute, chatroomRouter);
 app.use('/api/users-old', protectedRoute, userOldRouter);
+
+
+app.use('/api/test', protectedRoute2);
 
 // Number of users connected via SocketIO
 var numUsers = 0;

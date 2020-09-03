@@ -42,7 +42,7 @@ function LoginComponent() {
     .then(res => {
       console.log(res.response);
       userHasAuthenticated(true);
-      history.push("/");
+      history.push("/chatroom-list");
     })
     .catch(err => {
       console.log(err.response);
