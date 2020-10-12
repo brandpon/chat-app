@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, Form, useHistory} from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { useAppContext } from "../utils/contexts";
+import Cookies from 'js-cookie';
 import './css/navbar.css';
 
 function NavbarComponent(props) {
@@ -11,6 +12,8 @@ function NavbarComponent(props) {
 
   function handleLogout(){
     userHasAuthenticated(false);
+    Cookies.remove('auth');
+    Cookies.remove('name');
     history.push("/");
   }
 

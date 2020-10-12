@@ -7,6 +7,7 @@ const uuid = require('uuid');
 const timestamp = require('time-stamp');
 const axios = require('axios');
 const passport = require('passport');
+const cookieParser = require('cookie-parser')
 
 require('./config/passport')(passport)
 require('dotenv').config();
@@ -17,10 +18,22 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-app.use(cors());
-app.use(express.json());
+const corsOptions = {
+  //To allow requests from client
+  origin: [
+    "http://localhost:3000"
+  ],
+  credentials: true,
+  exposedHeaders: ["set-cookie"],
+};
 
-app.use(passport.initialize());
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(cookieParser());
+
+// console.log("env is " + process.env.NODE_ENV);
+
+// app.use(passport.initialize());
 
 // MongoDB stuff
 const URI = process.env.ATLAS_URI;
@@ -38,28 +51,31 @@ connection.once('open', () => {
 const keypair = require('./generateKeypair');
 keypair.genKeyPair;
 
-//test
-// const auth = require('./auth');
-
 // Express DB API routing
 const userRouter = require('./api/routes/users');
 const chatroomRouter = require('./api/routes/chatrooms');
 const protectedRoute = require('./api/routes/protectedRoute');
 const userOldRouter = require('./api/routes/users-old');
 
-// app.use('/api', routes);
+const testRouter = require('./api/routes/tester');
+
 const protectedRoute2 = require('./api/routes/protectedRoute2');
 app.use('/api/users', userRouter);
 
 // Use this middleware to protect routes
 app.use(protectedRoute);
+app.use(protectedRoute2);
 
-// Legacy code
+// Change to admin routes later
 app.use('/api/chatrooms', protectedRoute, chatroomRouter);
 app.use('/api/users-old', protectedRoute, userOldRouter);
 
-
+// REMOVE LATER, FOR TESTING PURPOSES
 app.use('/api/test', protectedRoute2);
+// app.use('/api/tester', protectedRoute2, testRouter);
+
+// So this is how you use authentication? middleware?
+app.use('/api/tester', testRouter);
 
 // Number of users connected via SocketIO
 var numUsers = 0;
@@ -118,7 +134,7 @@ io.on('connection', (socket) => {
   });
 
 });
-
+let a = server.address();
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

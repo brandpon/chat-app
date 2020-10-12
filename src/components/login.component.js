@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { useAppContext } from '../utils/contexts';
+import Cookies from 'js-cookie';
 import './css/login.css';
 
 function LoginComponent() {
@@ -37,11 +38,24 @@ function LoginComponent() {
       data: {
         username: username,
         password: password
-      }
+      },
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
     })
     .then(res => {
-      console.log(res.response);
+
+      console.log(res);
+
+      // console.log(Cookies.get('auth'));
+      console.log(Cookies.get());
+      // console.log(document.cookie);
+
       userHasAuthenticated(true);
+
       history.push("/chatroom-list");
     })
     .catch(err => {
@@ -92,7 +106,7 @@ function LoginComponent() {
       </Container>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>Some error message here</Modal.Body>
+        <Modal.Body>Invalid username or password</Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
             Close

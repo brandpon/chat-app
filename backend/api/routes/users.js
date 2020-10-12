@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bCrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const utils = require('../../lib/utils');
+const Cookies = require('js-cookie');
 
 let User = require('../../models/user.model');
 
@@ -27,7 +28,8 @@ router.route('/register').post((req, res, next) => {
   User.findOne({username: username})
   .then(user => {
     if (user){
-      return res.status(400).json({success:false, error:'Username already exists'});
+      console.log('Username already exists');
+      return res.status(400).json();
     } else {
 
       const stringToColour = utils.stringToColour(username);
@@ -43,13 +45,11 @@ router.route('/register').post((req, res, next) => {
       newUser.save()
       .then(user => {
         const body = {_id: user._id, username: user.username, email: user.email,
-           preferences: user.preferences, colour: user.colour, admin: false};
+           preferences: user.preferences, colour: user.colour};
 
         const jwt = utils.issueJWT(user);
-
-        // const cookie = res.cookie('jwt', jwt, {httpOnly: true});
-
-        return res.json({success: true, user: body, token: jwt.token, expiresIn: jwt.expires});
+        res.cookie('token', jwt, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true }); // 2 hrs
+        return res.status(200).json();
       })
     }
 
@@ -65,7 +65,8 @@ router.route('/login').post((req, res, next) => {
     console.log("Login: Trying to find user " + username);
 
     if (!user){
-      return res.status(401).json({success: false, error:'User not found'});
+      console.log('User not found');
+      return res.status(401).json();
     }
     user.comparePassword(password, (err, isMatch) => {
       if (err) throw err;
@@ -74,16 +75,22 @@ router.route('/login').post((req, res, next) => {
         console.log("Passwords matched");
 
         const body = {_id: user._id, username: user.username, email: user.email,
-           preferences: user.preferences, colour: user.colour, admin: false};
+           preferences: user.preferences, colour: user.colour};
 
         const jwt = utils.issueJWT(user);
+        // res.cookie('token', jwt, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true }); // 2 hrs
 
-        // res.cookie('jwt', jwt, {httpOnly: true});
+        // Change httpOnly to true after development
 
-        return res.json({success: true, user: body, token: jwt.token, expiresIn: jwt.expires});
+        res.cookie("jwt", JSON.stringify(jwt), { httpOnly: false, sameSite: 'strict' })
+
+        // res.cookie('auth', jwt, { httpOnly: false, sameSite: 'strict' })
+        // res.cookie('name', user.username, { httpOnly: false, sameSite: 'strict' })
+
+        return res.status(200).json(jwt);
       } else {
         console.log("Passwords don't match");
-        return res.status(401).json({success: false, error: 'Password incorrect'});
+        return res.status(401).json();
       }
     })
   })

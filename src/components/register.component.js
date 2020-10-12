@@ -86,7 +86,7 @@ function RegisterComponent() {
       </Container>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>Some error message here</Modal.Body>
+        <Modal.Body>Invalid username or password</Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
             Close

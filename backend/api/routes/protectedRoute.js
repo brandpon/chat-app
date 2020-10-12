@@ -3,6 +3,7 @@ const passport = require('passport');
 
 router.route('/').get(passport.authenticate('jwt', {session: false}), (req, res, next) => {
   // console.log(req.user);
+  console.log("?");
   next();
 })
 

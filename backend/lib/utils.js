@@ -25,11 +25,32 @@ function issueJWT(user) {
 
   const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn: expiresIn, algorithm: 'RS256' });
 
-  return {
-    token: "bearer " + signedToken,
-    expires: expiresIn
-  }
+  // return {
+  //   token: "bearer " + signedToken,
+  //   expires: expiresIn
+  // }
+  return "bearer " + signedToken;
 }
+
+// function issueJWT(user) {
+//   const _id = user._id;
+//
+//   const expiresIn = '1d';
+//
+//   const payload = {
+//     sub: _id,
+//     iat: Date.now()
+//   };
+//
+//   const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn: expiresIn, algorithm: 'RS256' });
+//
+//   return {
+//     token: "JWT " + signedToken,
+//     expires: expiresIn
+//   }
+//   // return "bearer " + signedToken;
+// }
+
 
 // Converts username to colour
 // https://stackoverflow.com/questions/3426404/
