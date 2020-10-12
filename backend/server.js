@@ -75,7 +75,7 @@ app.use('/api/test', protectedRoute2);
 // app.use('/api/tester', protectedRoute2, testRouter);
 
 // So this is how you use authentication? middleware?
-app.use('/api/tester', testRouter);
+app.use('/api/tester', passport.authenticate('jwt', {session: false}), testRouter);
 
 // Number of users connected via SocketIO
 var numUsers = 0;

@@ -47,9 +47,11 @@ router.route('/register').post((req, res, next) => {
         const body = {_id: user._id, username: user.username, email: user.email,
            preferences: user.preferences, colour: user.colour};
 
-        const jwt = utils.issueJWT(user);
-        res.cookie('token', jwt, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true }); // 2 hrs
-        return res.status(200).json();
+        const token = utils.issueJWT(user);
+
+        res.cookie('jwt', token, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict'});
+        res.cookie('name', user.username, { maxAge: 2 * 60 * 60 * 1000, sameSite: 'strict'});
+        return res.status(200).json({success: true});
       })
     }
 
@@ -69,7 +71,7 @@ router.route('/login').post((req, res, next) => {
       return res.status(401).json();
     }
     user.comparePassword(password, (err, isMatch) => {
-      if (err) throw err;
+      if (err){throw err;}
       if (isMatch){
 
         console.log("Passwords matched");
@@ -77,20 +79,15 @@ router.route('/login').post((req, res, next) => {
         const body = {_id: user._id, username: user.username, email: user.email,
            preferences: user.preferences, colour: user.colour};
 
-        const jwt = utils.issueJWT(user);
-        // res.cookie('token', jwt, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true }); // 2 hrs
+        const token = utils.issueJWT(user);
 
-        // Change httpOnly to true after development
+        res.cookie('jwt', token, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict'});
+        res.cookie('name', user.username, { maxAge: 2 * 60 * 60 * 1000, sameSite: 'strict'});
 
-        res.cookie("jwt", JSON.stringify(jwt), { httpOnly: false, sameSite: 'strict' })
-
-        // res.cookie('auth', jwt, { httpOnly: false, sameSite: 'strict' })
-        // res.cookie('name', user.username, { httpOnly: false, sameSite: 'strict' })
-
-        return res.status(200).json(jwt);
+        return res.status(200).json({success: true});
       } else {
         console.log("Passwords don't match");
-        return res.status(401).json();
+        return res.status(401).json({success: false});
       }
     })
   })

@@ -8,7 +8,6 @@ const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 var cookieExtractor = function(req) {
-  console.log("1");
   let token = null;
   if (req && req.cookies){
     token = req.cookies['jwt'];
@@ -17,36 +16,23 @@ var cookieExtractor = function(req) {
   return token;
 };
 
+// Site isn't https, doesn't work?
 var cookieExtractorSigned = function (req) {
-    console.log("2");
     let token = null;
     if (req && req.signedCookies && req.signedCookies.jwt) {
+
         token = req.signedCookies['jwt']['token'];
-        console.log('hi2');
         console.log(token);
     }
 
     return token;
 };
 
-var cookieExtractortest = function(req) {
-    console.log("3");
-    let token = null;
-    if (req && req.cookies){
-      console.log('hi3');
-      console.log(req.cookies);
-      token = req.cookies.token;
-      console.log(token);
-    }
-    return token;
-};
-
 // Change secret key later
 var options = {
-  jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderAsBearerToken(), cookieExtractor, cookieExtractorSigned, cookieExtractortest]),
+  jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderAsBearerToken(), cookieExtractor, cookieExtractorSigned]),
   secretOrKey: PUB_KEY,
   algorithms: ['RS256'],
-
 }
 
 
