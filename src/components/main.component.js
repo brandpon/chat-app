@@ -6,9 +6,9 @@ function MainComponent() {
 
   return (
       <div>
-        The contents of this page will replace the index page eventually.
+        <h2> You are logged in, this is the main page. </h2>
         <Router>
-          <Route path="/test">rf</Route>
+          <Route path="/test"></Route>
         </Router>
 
 

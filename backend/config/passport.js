@@ -11,7 +11,7 @@ var cookieExtractor = function(req) {
   let token = null;
   if (req && req.cookies){
     token = req.cookies['jwt'];
-    console.log(token);
+    // console.log(token);
   }
   return token;
 };
@@ -22,7 +22,7 @@ var cookieExtractorSigned = function (req) {
     if (req && req.signedCookies && req.signedCookies.jwt) {
 
         token = req.signedCookies['jwt']['token'];
-        console.log(token);
+        // console.log(token);
     }
 
     return token;

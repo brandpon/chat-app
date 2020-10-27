@@ -9,7 +9,7 @@ const SocketIoComponent = () => {
   useEffect(() => {
     Socket = io(ENDPOINT);
     return () => Socket.disconnect();
-  }, []);
+  });
 
   return (null);
 }

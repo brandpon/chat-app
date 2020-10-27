@@ -1,0 +1,18 @@
+
+
+
+Send updates to clients when another client enters/exists the room
+
+
+
+Voice chat + Voice Chat user list
+Mute/Deafen functionality?
+
+
+Persistent Chat Logs
+
+
+
+
+
+Check that routing/urls are working

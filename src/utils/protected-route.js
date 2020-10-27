@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Route, Redirect} from 'react-router-dom';
-
-// Need to implement auth context!
+import { useAuthContext } from "../utils/contexts";
 
 export default function ProtectedRoute ({component: Component, ...rest}){
+
+  const { isAuthenticated } = useAuthContext();
+
+
   return (
     <Route {...rest} render={(props) => (
-      true === true
-      ? <Component {...props}/>
-      : <Redirect to='/'/>
+      // Check if authenticated here?
+      // isAuthenticated ? <Component {...props}/> : <Redirect to='/'/>
+      isAuthenticated ? <Component {...props}/> : <h2> Not logged in </h2>
     )} />
   );
 }

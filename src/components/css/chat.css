@@ -10,6 +10,7 @@
 }
 
 .left-panel {
+  color: white;
   background-color: #383838;
   height: 95vh;
 }
@@ -46,7 +47,7 @@
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 .message-div:nth-child(2n) {
-    color: yellow;
+    color: white;
     margin-left: 5px;
     margin-top: 5px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

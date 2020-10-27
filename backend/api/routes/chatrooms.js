@@ -4,7 +4,7 @@ let Chatroom = require('../../models/chatroom.model');
 // Get all
 router.route('/').get((req, res) => {
   Chatroom.find()
-  .then(chatrooms => res.json(chatrooms))
+  .then(chatrooms => res.status(200).json(chatrooms))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -15,21 +15,28 @@ router.route('/add').post((req, res) => {
   const newChatroom = new Chatroom({roomname, description});
 
   newChatroom.save()
-    .then(() => res.json('Chatroom added'))
+    .then(() => res.status(200).json('Chatroom added'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // Get by ID
 router.route('/:id').get((req, res) => {
   Chatroom.findById(req.params.id)
-  .then(chatrooms => res.json(chatrooms))
+  .then(chatrooms => res.status(200).json(chatrooms))
+  .catch(err => res.status(400).json('Error: ' + err));
+});
+
+// Delete all
+router.route('/all').delete((req, res) => {
+  Chatroom.deleteMany()
+  .then(chatrooms => res.json('All chatrooms deleted'))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // Delete by ID
 router.route('/:id').delete((req, res) => {
   Chatroom.findByIdAndDelete(req.params.id)
-  .then(chatrooms => res.json('Chatroom deleted'))
+  .then(chatrooms => res.status(200).json('Chatroom deleted'))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -41,7 +48,7 @@ router.route('/update/:id').put((req, res) => {
     chatroom.description = req.body.description;
 
     chatroom.save()
-    .then(() => res.json('Chatroom updated'))
+    .then(() => res.status(200).json('Chatroom updated'))
     .catch(err => res.status(400).json('Error: ' + err));
   })
 });

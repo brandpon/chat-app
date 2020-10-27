@@ -1,28 +1,98 @@
 import React, {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Link} from "react-router-dom";
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-const default_rooms = [1,2,3];
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
+import axios from 'axios';
+import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
+import './css/chatroom-list.css';
 
 function ChatListComponent(props) {
 
-  const [roomList,setRoomList] = useState([]);
+  const [roomList, setRoomList] = useState([]);
 
-  // Populate list with available chatrooms
-  // Will want to add number of users in each room to this later on
+
+  function CustomToggle({ children, eventKey, room }) {
+    const customOnClick = useAccordionToggle(eventKey, () =>
+      console.log(room)
+    );
+  
+    return (
+      <Card.Header onClick={customOnClick}>
+        {children}
+        <Button className="float-right" href={room}>Join</Button>
+      </Card.Header>
+    );
+  }
+
+
+  async function onLoad(){
+
+    await axios({
+      method: 'get',
+      url: 'http://localhost:5000/api/chatrooms/',
+      withCredentials: true,
+      credentials: "include",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => {
+      console.log(res.data);
+      setRoomList(res.data.map((room, idx) =>
+        <React.Fragment key={room._id}>
+        <Card>
+          <Card.Header>
+          <CustomToggle room={'/chat/' + room.roomname} eventKey={idx+1}>
+            {room.roomname}
+          </CustomToggle>
+          </Card.Header>
+          <Accordion.Collapse eventKey={idx+1}>
+            <Card.Body>
+              Description: {room.description} 
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+        </React.Fragment>
+      ));
+    })
+    .catch(err => {
+      console.log(err.response);
+    });
+  }
+
+  // Get chatroom info from server
+  // Might want to make this update automatically?
   useEffect(() => {
-    setRoomList(default_rooms.map(room_number => <Link key={room_number} to={'/chat/' + room_number}><Button>Room {room_number}</Button></Link>));
+    onLoad();
   }, []);
 
   return (
-    <div>
+    <Container>
+      <h2> List of Chatrooms </h2>
+      <Accordion>
       {roomList}
-    </div>
+        {/* <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="0">
+            Click me!
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="0">
+            <Card.Body>Hello! I'm the body</Card.Body>
+          </Accordion.Collapse>
+        </Card>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="1">
+            Click me!
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="1">
+            <Card.Body>Hello! I'm another body</Card.Body>
+          </Accordion.Collapse>
+        </Card> */}
+      </Accordion>
+    </Container>
+
 
   );
 }

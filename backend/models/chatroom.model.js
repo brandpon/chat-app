@@ -10,12 +10,6 @@ const chatroomSchema = new Schema({
     minlength: 1,
     unique: true
   },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1,
-  },
   description: {
     type: String,
     required: true,

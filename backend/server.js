@@ -32,7 +32,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 // console.log("env is " + process.env.NODE_ENV);
-
 // app.use(passport.initialize());
 
 // MongoDB stuff
@@ -54,33 +53,33 @@ keypair.genKeyPair;
 // Express DB API routing
 const userRouter = require('./api/routes/users');
 const chatroomRouter = require('./api/routes/chatrooms');
-const protectedRoute = require('./api/routes/protectedRoute');
 const userOldRouter = require('./api/routes/users-old');
 
-const testRouter = require('./api/routes/tester');
+const protectedRoute = passport.authenticate('jwt', {session: false});
 
-const protectedRoute2 = require('./api/routes/protectedRoute2');
 app.use('/api/users', userRouter);
-
-// Use this middleware to protect routes
-app.use(protectedRoute);
-app.use(protectedRoute2);
-
-// Change to admin routes later
 app.use('/api/chatrooms', protectedRoute, chatroomRouter);
+
+// Change to admin route later
 app.use('/api/users-old', protectedRoute, userOldRouter);
 
-// REMOVE LATER, FOR TESTING PURPOSES
-app.use('/api/test', protectedRoute2);
-// app.use('/api/tester', protectedRoute2, testRouter);
+// TEST ROUTE
+const testRouter = require('./api/routes/tester');
+app.use('/api/tester', protectedRoute, testRouter);
 
-// So this is how you use authentication? middleware?
-app.use('/api/tester', passport.authenticate('jwt', {session: false}), testRouter);
+
+
+// SocketIO handling
+// Want to move this to a separate file soon
+
+// Generate custom 
 
 // Number of users connected via SocketIO
 var numUsers = 0;
 
-// SocketIO handling
+// Mapping of client_IDs to actual names
+var connectedClients = {};
+
 io.on('connection', (socket) => {
   ++numUsers;
 
@@ -89,7 +88,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', (data) => {
 
-    console.log('Message: room ' + data.room + ' ' + data.username + ': ' + data.message);
+    console.log('[Message] ' + data.room + ', User ' + data.username + ': ' + data.message);
     data.uuid = uuid.v4();
     data.timestamp = timestamp('YYYY/MM/DD:mm:ss');
 
@@ -98,23 +97,41 @@ io.on('connection', (socket) => {
       if (clients.includes(socket.id)){
         io.sockets.to(data.room).emit('message', data);
 
-        // Should add the message to the DB for this room aswell
+        // TODO: Add the message to the DB for this room aswell
       }
     });
   });
 
   socket.on('joined room', (data) => {
+    // If the client left a previous room to join this room (client can only be in one room at a time)
     if (socket.room){
       console.log("User left room " + socket.room);
       socket.leave(socket.room);
     }
 
     socket.join(data.room);
-    console.log("User joined room " + data.room);
+    console.log(socket.id);
+    socket.emit('test', 'Welcome to the chatroom!');
+
+
+
+    // Will need to verify the name via JWT/authentication later
+    console.log("[Join] " + data.username + " joined room " + data.room);
+
+    // Whenever a user joins a room, broadcast list of all clients connected to that room
+
+    // io.of('/').in(data.room).clients((error, clients) => {
+    //   if (error) throw error;
+    //   if (clients.includes(socket.id)){
+    //     io.sockets.to(data.room).emit('JOINED', data);
+
+    //     // Should add the message to the DB for this room aswell
+    //   }
+    // });
+    
 
     let test = Object.keys(io.sockets.adapter.rooms);
     console.log(test);
-
     console.log('join Client currently in rooms ' + test);
 
     // socket.room = data.room;
@@ -134,7 +151,6 @@ io.on('connection', (socket) => {
   });
 
 });
-let a = server.address();
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

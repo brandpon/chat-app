@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
-import { useAppContext } from '../utils/contexts';
+import { useAuthContext } from '../utils/contexts';
 import Cookies from 'js-cookie';
 import './css/login.css';
 
@@ -16,7 +16,7 @@ function LoginComponent() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
-  const {userHasAuthenticated} = useAppContext();
+  const {userHasAuthenticated} = useAuthContext();
 
   const history = useHistory();
 
@@ -48,12 +48,7 @@ function LoginComponent() {
     })
     .then(res => {
 
-      console.log(res);
-
-      // console.log(Cookies.get('auth'));
-      console.log(Cookies.get());
-      // console.log(document.cookie);
-
+      Cookies.set('loggedIn', true);
       userHasAuthenticated(true);
 
       history.push("/chatroom-list");
@@ -63,7 +58,6 @@ function LoginComponent() {
       handleShow();
     });
   }
-
 
   return(
     <div className='Login row align-items-center vertical-center justify-content-center'>

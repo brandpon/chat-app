@@ -1,26 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, Form, useHistory} from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
-import { useAppContext } from "../utils/contexts";
+import { useAuthContext } from "../utils/contexts";
 import Cookies from 'js-cookie';
 import './css/navbar.css';
 
 function NavbarComponent(props) {
 
-  const { isAuthenticated, userHasAuthenticated } = useAppContext();
+
+
+
+  const { isAuthenticated, userHasAuthenticated } = useAuthContext();
   const history = useHistory();
+
+  // Onload
+  useEffect(() => {
+
+  }, []);
 
   function handleLogout(){
     userHasAuthenticated(false);
-    Cookies.remove('auth');
+    // Cookies.remove('jwt');
     Cookies.remove('name');
+    Cookies.remove('loggedIn');
     history.push("/");
   }
 
     return (
 
       <Navbar className="header navbar-expand-lg navbar-light" variant="dark" bg="dark">
-        <Navbar.Brand >Chat App</Navbar.Brand>
+        <Navbar.Brand >{Cookies.get('name') ||'Chat App'}</Navbar.Brand>
         <Navbar.Toggle/>
           <Navbar.Collapse>
             <Nav>

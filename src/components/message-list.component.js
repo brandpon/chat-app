@@ -8,12 +8,22 @@ function MessageListComponent(){
   const [messageList, setMessageList] = useState([]);
 
   // {'username':'user1','message':'hello', 'uuid': 123}
-  useEffect(() => {
 
+  useEffect(() => {
     Socket.on('message', (data) => {
       setMessage([data]);
-
+      console.log(data);
     });
+
+    // Socket.on('test', (data) => {
+    //   setMessage([data]);
+    //   // console.log(data);
+    // });
+
+  }, []);
+
+  // Update state every time client receives a message
+  useEffect(() => {
     setMessageList(message.map(message =>
      [...messageList, <div className='message-div' key={message}>{message.username}: {message.message}</div>]
    ));

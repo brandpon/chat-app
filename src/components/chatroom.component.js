@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import UserListComponent from './userlist.component';
 import MessageListComponent from './message-list.component';
 import SocketIO, {Socket} from '../utils/socket.io'
-import * as uuid from 'uuid';
+import Cookies from 'js-cookie';
 
 import './css/chat.css';
 
@@ -17,13 +17,13 @@ function ChatComponent(props) {
 
   const [message_list, setMessage_list] = useState([]);
   const [userMessage, setUserMessage] = useState('');
-  const [username, setUsername] = useState('DEFAULT USER');
+  const [username, setUsername] = useState(Cookies.get('name'));
   // const [roomID, setRoomID] = useState('TEST_ROOM_ID')
 
   let { room } = useParams();
 
   useEffect(() => {
-    Socket.emit('joined room', {room: room});
+    Socket.emit('joined room', {room: room, username: username});
   }, []);
 
 
@@ -51,7 +51,9 @@ function ChatComponent(props) {
       <Row noGutters>
         <Col className="left-Col">
           <div className="left-panel">
-            <div className='extra'></div>
+            <div className='extra'>
+              {room}
+            </div>
           </div>
         </Col>
 
@@ -65,7 +67,9 @@ function ChatComponent(props) {
 
         <Col className="right-Col">
           <div className="right-panel">
-            <div className='userlist text-white'><UserListComponent/></div>
+            <div className='userlist text-white'>
+              <UserListComponent/>
+            </div>
           </div>
         </Col>
       </Row>
