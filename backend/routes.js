@@ -1,17 +1,24 @@
 const router = require('express').Router();
 
-router.route('/users',userRouter)
+module.exports = function(app, passport){
 
-app.use('/api', userRouter);
+    const userRouter = require('./api/routes/users');
+    const chatroomRouter = require('./api/routes/chatrooms');
+    const userOldRouter = require('./api/routes/users-old');
 
-// Use this middleware to protect routes
-app.use(protectedRoute);
+    const protectedRoute = passport.authenticate('jwt', {session: false});
 
-// Legacy code
-app.use('/api/chatrooms', protectedRoute, chatroomRouter);
-app.use('/api/users-old', protectedRoute, userOldRouter);
+    app.use('/api/users', userRouter);
+    app.use('/api/chatrooms', protectedRoute, chatroomRouter);
 
+    // Change to admin route later
+    app.use('/api/users-old', protectedRoute, userOldRouter);
 
-app.use('/api/test', protectedRoute2);
+    // TEST ROUTE
+    const testRouter = require('./api/routes/tester');
+    app.use('/api/tester', protectedRoute, testRouter);
 
-module.exports = router;
+    return router;
+}
+
+// module.exports = router;

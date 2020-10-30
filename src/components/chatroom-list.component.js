@@ -12,20 +12,14 @@ function ChatListComponent(props) {
 
   const [roomList, setRoomList] = useState([]);
 
-
   function CustomToggle({ children, eventKey, room }) {
-    const customOnClick = useAccordionToggle(eventKey, () =>
-      console.log(room)
-    );
-  
     return (
-      <Card.Header onClick={customOnClick}>
+      <Card.Header onClick={useAccordionToggle(eventKey)}>
         {children}
         <Button className="float-right" href={room}>Join</Button>
       </Card.Header>
     );
   }
-
 
   async function onLoad(){
 
@@ -40,7 +34,7 @@ function ChatListComponent(props) {
       },
     })
     .then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       setRoomList(res.data.map((room, idx) =>
         <React.Fragment key={room._id}>
         <Card>
@@ -64,7 +58,7 @@ function ChatListComponent(props) {
   }
 
   // Get chatroom info from server
-  // Might want to make this update automatically?
+  // Might want to make this update on timer?
   useEffect(() => {
     onLoad();
   }, []);

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-// Fix this file later on, when you actually need to connect to backend
+// Implement this at the very end, isn't important for MVP
 function CreateChatroomComponent() {
 
   const [roomname, setRoomname] = useState('default roomname');

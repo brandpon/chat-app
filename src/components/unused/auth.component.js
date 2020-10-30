@@ -9,7 +9,8 @@ import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
 // import './css/login.css';
 
-// Combining Login + Register pages
+// Combining Login + Register page
+// THIS FILE WILL PROBABLY BE DELETED
 
 function AuthComponent (props) {
 

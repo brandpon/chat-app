@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import UserListComponent from './userlist.component';
 import MessageListComponent from './message-list.component';
 import SocketIO, {Socket} from '../utils/socket.io'
@@ -18,6 +19,7 @@ function ChatComponent(props) {
   const [message_list, setMessage_list] = useState([]);
   const [userMessage, setUserMessage] = useState('');
   const [username, setUsername] = useState(Cookies.get('name'));
+  const [isVoiceChat, setVoiceChat] = useState(false);
   // const [roomID, setRoomID] = useState('TEST_ROOM_ID')
 
   let { room } = useParams();
@@ -45,6 +47,12 @@ function ChatComponent(props) {
     }
   };
 
+  const toggleVoice = (event) => {
+    event.preventDefault();
+    setVoiceChat(!isVoiceChat);
+    console.log(isVoiceChat);
+  }
+
   return (
     <Container className='main' fluid>
       <SocketIO/>
@@ -53,6 +61,9 @@ function ChatComponent(props) {
           <div className="left-panel">
             <div className='extra'>
               {room}
+              {isVoiceChat 
+              ? <Button onClick={toggleVoice}>Leave Chat</Button> 
+              : <Button onClick={toggleVoice}>Join Chat</Button>}
             </div>
           </div>
         </Col>

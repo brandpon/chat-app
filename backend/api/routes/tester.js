@@ -1,9 +1,4 @@
 const router = require('express').Router();
-const bCrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const utils = require('../../lib/utils');
-const Cookies = require('js-cookie');
-const passport = require('passport');
 
 // tester
 router.route('/test').get((req, res, next) => {

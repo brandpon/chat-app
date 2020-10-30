@@ -17,7 +17,7 @@ function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
 
-  // Probably unneeded?
+  // Checks if user has authenticated previously, auto log in
   useEffect(() => {
     if (Cookies.get('loggedIn') && Cookies.get('name')){
       userHasAuthenticated(true);

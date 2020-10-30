@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bCrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const utils = require('../../lib/utils');
-const Cookies = require('js-cookie');
+// const Cookies = require('js-cookie');
 
 let User = require('../../models/user.model');
 
@@ -49,8 +49,8 @@ router.route('/register').post((req, res, next) => {
 
         const token = utils.issueJWT(user);
 
-        res.cookie('jwt', token, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict'});
-        res.cookie('name', user.username, { maxAge: 2 * 60 * 60 * 1000, sameSite: 'strict'});
+        res.cookie('jwt', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict'});
+        res.cookie('name', user.username, { maxAge: 24 * 60 * 60 * 1000, sameSite: 'strict'});
         return res.status(200).json({success: true});
       })
     }
@@ -81,8 +81,8 @@ router.route('/login').post((req, res, next) => {
 
         const token = utils.issueJWT(user);
 
-        res.cookie('jwt', token, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict'});
-        res.cookie('name', user.username, { maxAge: 2 * 60 * 60 * 1000, sameSite: 'strict'});
+        res.cookie('jwt', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict'});
+        res.cookie('name', user.username, { maxAge: 24 * 60 * 60 * 1000, sameSite: 'strict'});
 
         return res.status(200).json({success: true});
       } else {

@@ -14,12 +14,6 @@ function MessageListComponent(){
       setMessage([data]);
       console.log(data);
     });
-
-    // Socket.on('test', (data) => {
-    //   setMessage([data]);
-    //   // console.log(data);
-    // });
-
   }, []);
 
   // Update state every time client receives a message
