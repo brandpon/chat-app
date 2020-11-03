@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Socket} from '../utils/socket.io';
+import {socket} from '../utils/socket.io';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import './css/chat.css';
 
@@ -10,7 +10,7 @@ function MessageListComponent(){
   // {'username':'user1','message':'hello', 'uuid': 123}
 
   useEffect(() => {
-    Socket.on('message', (data) => {
+    socket.on('message', (data) => {
       setMessage([data]);
       console.log(data);
     });

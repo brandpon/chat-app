@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import NavbarComponent from "./components/navbar.component";
 import MainComponent from "./components/main.component";
@@ -10,8 +9,8 @@ import RegisterComponent from './components/register.component';
 import ProtectedRoute from "./utils/protected-route";
 import { AuthContext } from "./utils/contexts";
 import Cookies from 'js-cookie';
+import 'bootstrap/dist/css/bootstrap.css';
 
-// TODO: Only connect to SocketIO after logging in
 function App() {
 
   const [isAuthenticated, userHasAuthenticated] = useState(false);
@@ -41,11 +40,10 @@ function App() {
             </Route>
 
             <Route path="/main"><MainComponent/></Route>
-            <ProtectedRoute path="/chatroom-list" component={ChatRoomListComponent}></ProtectedRoute>
             <Route path="/login"><LoginComponent/></Route>
             <Route path="/register"><RegisterComponent/></Route>
-            <Route path="/chat/:room"><ChatRoomComponent/></Route>
-            <ProtectedRoute path='/test' component={ChatRoomComponent}></ProtectedRoute>
+            <ProtectedRoute path="/chatroom-list" component={ChatRoomListComponent}></ProtectedRoute>
+            <ProtectedRoute path="/chat/:room" component={ChatRoomComponent}></ProtectedRoute>
             {/* <Route path = "*"><NoMatch/></Route> */}
           
             </AuthContext.Provider>

@@ -57,7 +57,7 @@ function ChatListComponent(props) {
     });
   }
 
-  // Get chatroom info from server
+  // Get chatroom (list) info from server
   // Might want to make this update on timer?
   useEffect(() => {
     onLoad();
@@ -65,7 +65,7 @@ function ChatListComponent(props) {
 
   return (
     <Container>
-      <h2> List of Chatrooms </h2>
+      <h2> Join a Chatroom </h2>
       <Accordion>
       {roomList}
         {/* <Card>

@@ -44,8 +44,8 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').put((req, res) => {
   Chatroom.findById(req.params.id)
   .then(chatroom => {
-    chatroom.roomname = req.body.roomname;
-    chatroom.description = req.body.description;
+    chatroom.roomname = req.body.roomname || chatroom.roomname;
+    chatroom.description = req.body.description || chatroom.description;
 
     chatroom.save()
     .then(() => res.status(200).json('Chatroom updated'))
@@ -53,7 +53,20 @@ router.route('/update/:id').put((req, res) => {
   })
 });
 
+// Update messages
+// Can only add to the message array
+router.route('/message/:id').put((req, res) => {
+  Chatroom.findById(req.params.id)
+  .then(chatroom => {
+    chatroom.messages.push({message : req.body.message, username: "TODO"});
+
+    chatroom.save()
+    .then(() => res.status(200).json('Message added'))
+    .catch(err => res.status(400).json('Error: ' + err));
+  })
+});
+
 // need something for adding a message here
-// then something for deleting and maybe another for editing a message
+
 
 module.exports = router;

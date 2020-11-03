@@ -1,10 +1,8 @@
 const router = require('express').Router();
-const bCrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const utils = require('../../lib/utils');
-// const Cookies = require('js-cookie');
-
 let User = require('../../models/user.model');
+
+// User registration and login routes
 
 // Register
 router.route('/register').post((req, res, next) => {
@@ -40,12 +38,12 @@ router.route('/register').post((req, res, next) => {
         email: email,
         preferences: 'Default',
         colour: stringToColour,
-        admin: false,
       });
       newUser.save()
       .then(user => {
-        const body = {_id: user._id, username: user.username, email: user.email,
-           preferences: user.preferences, colour: user.colour};
+        
+        // const body = {_id: user._id, username: user.username, email: user.email,
+        //    preferences: user.preferences, colour: user.colour};
 
         const token = utils.issueJWT(user);
 
@@ -76,8 +74,8 @@ router.route('/login').post((req, res, next) => {
 
         console.log("Passwords matched");
 
-        const body = {_id: user._id, username: user.username, email: user.email,
-           preferences: user.preferences, colour: user.colour};
+        // const body = {_id: user._id, username: user.username, email: user.email,
+        //    preferences: user.preferences, colour: user.colour};
 
         const token = utils.issueJWT(user);
 

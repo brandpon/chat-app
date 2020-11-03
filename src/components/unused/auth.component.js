@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
-import {Socket} from './socket.io.component';
+import {socket} from './socket.io.component';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';

@@ -10,13 +10,8 @@ function MainComponent() {
         <Router>
           <Route path="/test"></Route>
         </Router>
-
-
       </div>
-
   );
 }
-
-
 
 export default MainComponent;

@@ -1,7 +1,7 @@
 const uuid = require('uuid');
 const timestamp = require('time-stamp');
 
-// Mappings
+// Mappings:
 // Socketid to username
 var clientMapping = {};
 // Room to array of usernames
@@ -11,7 +11,6 @@ module.exports = function(socket, io){
 
   console.log();
   console.log('Client connected from IP: ' + socket.handshake.address);
-  console.log("Number of connected clients: " + Object.keys(clientMapping).length);
 
   socket.on('message', (data) => {
 
@@ -68,8 +67,8 @@ module.exports = function(socket, io){
       roomMapping[data.room] = [socket.id];
     }
 
-    console.log(clientMapping);
-    console.log(roomMapping);
+    // console.log(clientMapping);
+    // console.log(roomMapping);
 
     // TODO: Verify the name via JWT later
     console.log("[Joined Room] " + data.username + " joined room " + data.room);
@@ -79,35 +78,28 @@ module.exports = function(socket, io){
     // Broadcast list of all clients in the room
     io.of('/').in(data.room).clients((error, clients) => {
       if (error) throw error;
-      console.log(clients);
+      // console.log(clients);
       const users = [];
       clients.forEach(client => users.push(clientMapping[client]));
       io.sockets.to(data.room).emit('userlist', users);
-      console.log(users);
+      // console.log(users);
     });
+
+    console.log("Number of connected clients: " + Object.keys(clientMapping).length);
 
   })
 
-  // When client has left a room
-  // This is probably copied code from disconnecting
-  // TODO: Do function
-  // socket.on('left room', (data) => {
-  //   socket.leave(socket.room);
-  //   console.log("User left room " + socket.room);
-  // })
-
   socket.on("disconnecting", () => {
 
-    console.log("User is leaving room/disconnecting");
+    console.log("User is leaving room");
 
-    //  This is a hack to prevent crashing when a user disconnects after the server has restarted
-
+    //  This is to prevent crashing when a user disconnects after the server has restarted
     if (!(socket.id in clientMapping)){
       return;
     }
 
-    console.log(clientMapping);
-    console.log(roomMapping);
+    // console.log(clientMapping);
+    // console.log(roomMapping);
     
     if (socket.id in clientMapping){
       delete clientMapping[socket.id];
@@ -126,8 +118,8 @@ module.exports = function(socket, io){
     socket.leave(socketRoom);
     
     console.log("User left room " + socketRoom);
-    console.log(clientMapping);
-    console.log(roomMapping);
+    // console.log(clientMapping);
+    // console.log(roomMapping);
 
     io.of('/').in(socketRoom).clients((error, clients) => {
       if (error) throw error;
@@ -135,7 +127,7 @@ module.exports = function(socket, io){
       const users = [];
       clients.forEach(client => users.push(clientMapping[client]));
       io.sockets.to(socketRoom).emit('userlist', users);
-      console.log(users);
+      // console.log(users);
     });
 
     console.log('Client Disconnected');

@@ -10,8 +10,8 @@ const fs = require('fs');
 function genKeyPair() {
 
     // Check if files exist first
-  if (!fs.exists(__dirname + '/id_rsa_pub.pem', keyPair.publicKey)
-  && !fs.exists(__dirname + '/id_rsa_priv.pem', keyPair.privateKey)){
+  if (!fs.existsSync(__dirname + '/id_rsa_pub.pem')
+  && !fs.existsSync(__dirname + '/id_rsa_priv.pem')){
 
     // Generates an object where the keys are stored in properties `privateKey` and `publicKey`
     const keyPair = crypto.generateKeyPairSync('rsa', {
@@ -28,7 +28,6 @@ function genKeyPair() {
 
       // Create the public key file
       fs.writeFileSync(__dirname + '/id_rsa_pub.pem', keyPair.publicKey);
-
       // Create the private key file
       fs.writeFileSync(__dirname + '/id_rsa_priv.pem', keyPair.privateKey);
 
@@ -36,6 +35,6 @@ function genKeyPair() {
 }
 
 // Generate the keypair
-// genKeyPair();
+genKeyPair();
 
 module.exports.keypair = genKeyPair;

@@ -37,18 +37,18 @@
 
 .message-box{
   height: 5vh;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 .message-div {
-      color: red;
+      color: white;
       margin-left: 5px;
       margin-top: 5px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
   }
 .message-div:nth-child(2n) {
     color: white;
     margin-left: 5px;
     margin-top: 5px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }

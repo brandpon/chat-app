@@ -2,13 +2,19 @@ import {useEffect} from 'react';
 import io from "socket.io-client";
 const ENDPOINT = 'http://localhost:5000';
 
-export var Socket;
+export var socket;
 
 const SocketIoComponent = () => {
 
   useEffect(() => {
-    Socket = io(ENDPOINT);
-    return () => Socket.disconnect();
+    socket = io(ENDPOINT);
+
+  socket.on('connect', () => {
+    console.log("Connected with socketio")
+  });
+
+
+    return () => socket.disconnect();
   }, []);
 
   return (null);

@@ -7,10 +7,8 @@ export default function ProtectedRoute ({component: Component, ...rest}){
 
   const { isAuthenticated } = useAuthContext();
 
-
   return (
     <Route {...rest} render={(props) => (
-      // Check if authenticated here?
       // isAuthenticated ? <Component {...props}/> : <Redirect to='/'/>
       isAuthenticated ? <Component {...props}/> : <h2> Not logged in </h2>
     )} />

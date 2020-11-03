@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import UserListComponent from './userlist.component';
 import MessageListComponent from './message-list.component';
-import SocketIO, {Socket} from '../utils/socket.io'
+import SocketIO, {socket} from '../utils/socket.io'
 import Cookies from 'js-cookie';
 
 import './css/chat.css';
@@ -25,7 +25,7 @@ function ChatComponent(props) {
   let { room } = useParams();
 
   useEffect(() => {
-    Socket.emit('joined room', {room: room, username: username});
+    socket.emit('joined room', {room: room, username: username});
   }, []);
 
 
@@ -35,7 +35,7 @@ function ChatComponent(props) {
       setMessage_list([...message_list, userMessage]);
 
       // Send the message to the server
-      Socket.emit('message', {'username': username,'message': userMessage, 'room': room});
+      socket.emit('message', {'username': username,'message': userMessage, 'room': room});
       setUserMessage('');
     }
   }

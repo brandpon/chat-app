@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let User = require('../../models/user.model');
 
-// TODO: This file can be removed as the functionality is in admin routes
+// Admin only routes
 
 // Add one
 router.route('/add').post((req, res) => {
@@ -30,18 +30,19 @@ router.route('/test/:id').get((req, res) => {
 router.route('/update/:id').put((req, res) => {
   User.findById(req.params.id)
   .then(user => {
-    // user.username = req.body.username || user.username;
-    // user.password = req.body.password || user.password;
-    // user.email = req.body.email || user.email;
-    // user.colour = req.body.colour || user.colour;
+    user.username = req.body.username || user.username;
+    user.password = req.body.password || user.password;
+    user.email = req.body.email || user.email;
+    user.colour = req.body.colour || user.colour;
     user.preferences = req.body.preferences || user.preferences;
-    // user.isAdmin = req.body.isAdmin || true;
+    // user.isAdmin = req.body.isAdmin || false;
 
     user.save()
     .then(() => res.status(200).json('User updated'))
     .catch(err => res.status(400).json('Error: ' + err));
   })
 });
+
 
 // Delete
 router.route('/all').delete((req, res) => {
@@ -57,12 +58,19 @@ router.route('/:id').delete((req, res) => {
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// test
+router.route('/test').get((req, res) => {
+  return res.status(200).send("get works");
+});
+
+
 // Get all
 router.route('/').get((req, res) => {
   User.find()
   .then(users => res.json(users))
   .catch(err => res.status(400).json('Error: ' + err));
 });
+
 
 
 module.exports = router;

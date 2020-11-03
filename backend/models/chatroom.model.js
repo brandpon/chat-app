@@ -16,6 +16,17 @@ const chatroomSchema = new Schema({
     trim: true,
     default: 'My room',
   },
+  messages: [{
+    message: {
+      type: String,
+      required: true,
+      default: '',
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+  }],
   preferences: {
     type: String,
     default: '',

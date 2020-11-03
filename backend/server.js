@@ -6,11 +6,13 @@ const http = require('http');
 const passport = require('passport');
 const cookieParser = require('cookie-parser')
 
+// Generate RSA keypair files if necessary
+const keypair = require('./generateKeypair');
+keypair.genKeyPair;
+
 require('./config/passport')(passport)
 require('dotenv').config();
-
 const port = process.env.PORT || 5000;
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -28,7 +30,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-// console.log("env is " + process.env.NODE_ENV);
 // app.use(passport.initialize());
 
 // MongoDB stuff
@@ -43,36 +44,28 @@ connection.once('open', () => {
   console.log("MongoDB database connection established successfully")
 })
 
-// Generate RSA keypair files if necessary
-const keypair = require('./generateKeypair');
-keypair.genKeyPair;
-
 // Express DB API routing
 const routes = require('./routes')(app, passport);
 app.use('/', routes);
 
-// const userRouter = require('./api/routes/users');
-// const chatroomRouter = require('./api/routes/chatrooms');
-// const userOldRouter = require('./api/routes/users-old');
-
-// const protectedRoute = passport.authenticate('jwt', {session: false});
-
-// app.use('/api/users', userRouter);
-// app.use('/api/chatrooms', protectedRoute, chatroomRouter);
-
-// // Change to admin route later
-// app.use('/api/users-old', protectedRoute, userOldRouter);
-
-// // TEST ROUTE
-// const testRouter = require('./api/routes/tester');
-// app.use('/api/tester', protectedRoute, testRouter);
-
 // SocketIO handling
-// TODO: Need to authenticate later
+// TODO: Need to authenticate SocketIO messages later
 
 io.on('connection', (socket) => {
+  console.log("test");
   require('./socketio')(socket, io);
 });
+
+// io.sockets
+//   .on('connection', socketioJwt.authorize({
+//     secret: PUB_KEY,
+//     timeout: 15000 // 15 seconds to send the authentication message
+//   }))
+//   .on('authenticated', (socket) => {
+//     require('./socketio')(socket, io);
+//     //this socket is authenticated, we are good to handle more events from it.
+//     console.log(`hello! ${socket.decoded_token.name}`);
+//   });
 
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
