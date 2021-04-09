@@ -14,7 +14,7 @@ import './css/chat.css';
 
 // Need URL to reflect which chatroom you joined
 
-function ChatComponent(props) {
+function ChatComponent() {
 
   const [message_list, setMessage_list] = useState([]);
   const [userMessage, setUserMessage] = useState('');
@@ -35,7 +35,7 @@ function ChatComponent(props) {
       setMessage_list([...message_list, userMessage]);
 
       // Send the message to the server
-      socket.emit('message', {'username': username,'message': userMessage, 'room': room});
+      socket.emit('message', {'username': username, 'message': userMessage, 'room': room});
       setUserMessage('');
     }
   }

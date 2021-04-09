@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import './css/chatroom-list.css';
 
-function ChatListComponent(props) {
+function ChatListComponent() {
 
   const [roomList, setRoomList] = useState([]);
 

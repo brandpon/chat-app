@@ -5,7 +5,7 @@ import { useAuthContext } from "../utils/contexts";
 import Cookies from 'js-cookie';
 import './css/navbar.css';
 
-function NavbarComponent(props) {
+function NavbarComponent() {
 
 
 

@@ -59,7 +59,7 @@ function LoginComponent() {
     });
   }
 
-  return(
+  return (
     <div className='Login row align-items-center vertical-center justify-content-center'>
       <Container>
         <h1>Login to Account</h1>
