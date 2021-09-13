@@ -13,6 +13,8 @@ function genKeyPair() {
   if (!fs.existsSync(__dirname + '/id_rsa_pub.pem')
   && !fs.existsSync(__dirname + '/id_rsa_priv.pem')){
 
+    console.log("No keypair exists, generating keypair");
+
     // Generates an object where the keys are stored in properties `privateKey` and `publicKey`
     const keyPair = crypto.generateKeyPairSync('rsa', {
         modulusLength: 4096, // bits - standard for RSA keys
@@ -32,9 +34,9 @@ function genKeyPair() {
       fs.writeFileSync(__dirname + '/id_rsa_priv.pem', keyPair.privateKey);
 
     }
+    else {
+      console.log("Keypair exists");
+    }
 }
 
-// Generate the keypair
-genKeyPair();
-
-module.exports.keypair = genKeyPair;
+module.exports = genKeyPair;

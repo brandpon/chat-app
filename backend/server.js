@@ -5,10 +5,10 @@ const socketIO = require('socket.io');
 const http = require('http');
 const passport = require('passport');
 const cookieParser = require('cookie-parser')
+const fs = require('fs');
 
 // Generate RSA keypair files if necessary
-const keypair = require('./generateKeypair');
-keypair.genKeyPair;
+require('./generateKeypair')();
 
 require('./config/passport')(passport)
 require('dotenv').config();
@@ -32,6 +32,10 @@ app.use(cookieParser());
 
 // app.use(passport.initialize());
 
+if (!fs.existsSync(__dirname + '/.env')) {
+  console.log("No .env exists");
+}
+
 // MongoDB stuff
 const URI = process.env.ATLAS_URI;
 mongoose.connect(URI, {
@@ -41,8 +45,12 @@ mongoose.connect(URI, {
 
 const connection = mongoose.connection;
 connection.once('open', () => {
-  console.log("MongoDB database connection established successfully")
+  console.log("MongoDB database connection established successfully");
 })
+.on('error', function (err) {
+  console.log("MongoDB database connection failed");
+  console.log(err);
+});
 
 // Express DB API routing
 const routes = require('./routes')(app, passport);

@@ -10,8 +10,10 @@ Mute/Deafen functionality?
 
 
 Persistent Chat Logs
+message loading + saving messages to db
 
 
+host on AWS instance
 
 
 
