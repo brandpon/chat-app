@@ -43,6 +43,23 @@ router.route('/update/:id').put((req, res) => {
   })
 });
 
+// Update by ID, make admin
+router.route('/update/admin/:id').put((req, res) => {
+  User.findById(req.params.id)
+  .then(user => {
+    // user.username = req.body.username || user.username;
+    // user.password = req.body.password || user.password;
+    // user.email = req.body.email || user.email;
+    // user.colour = req.body.colour || user.colour;
+    user.preferences = req.body.preferences || user.preferences;
+    user.isAdmin = true;
+
+    user.save()
+    .then(() => res.status(200).json('User updated'))
+    .catch(err => res.status(400).json('Error: ' + err));
+  })
+});
+
 // Delete
 router.route('/all').delete((req, res) => {
   User.deleteMany()

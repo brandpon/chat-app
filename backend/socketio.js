@@ -21,7 +21,9 @@ module.exports = function(socket, io){
 
     // Gets all clients in the room
     io.of('/').in(data.room).clients((error, clients) => {
-      if (error) throw error;
+      if (error){
+        console.log("Error getting all clients in room");
+      } 
       if (clients.includes(socket.id)){
         io.sockets.to(data.room).emit('message', data);
 
@@ -77,7 +79,9 @@ module.exports = function(socket, io){
 
     // Broadcast list of all clients in the room
     io.of('/').in(data.room).clients((error, clients) => {
-      if (error) throw error;
+      if (error){
+        console.log("Error broadcasting to all clients");
+      }
       // console.log(clients);
       const users = [];
       clients.forEach(client => users.push(clientMapping[client]));
@@ -122,7 +126,9 @@ module.exports = function(socket, io){
     // console.log(roomMapping);
 
     io.of('/').in(socketRoom).clients((error, clients) => {
-      if (error) throw error;
+      if (error){
+        console.log("Error announcing client left room");
+      }
       console.log(clients);
       const users = [];
       clients.forEach(client => users.push(clientMapping[client]));

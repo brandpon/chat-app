@@ -5,12 +5,17 @@ import Container from 'react-bootstrap/Container';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import './css/chatroom-list.css';
 
 function ChatListComponent() {
 
   const [roomList, setRoomList] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   function CustomToggle({ children, eventKey, room }) {
     return (
@@ -57,6 +62,27 @@ function ChatListComponent() {
     });
   }
 
+    // Send request to backend, redirect page
+    async function createChatroom(event){
+      event.preventDefault();
+  
+      await axios({
+        method: 'post',
+        url: 'http://localhost:5000/api/chatrooms/add/',
+        data: {
+          roomname: "test",
+          description: "test"
+        }
+      })
+      .then(res => {
+        console.log('Response: ' + res);
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        handleShow();
+      });
+    }
+
   // Get chatroom (list) info from server
   // Might want to make this update on timer?
   useEffect(() => {
@@ -66,6 +92,7 @@ function ChatListComponent() {
   return (
     <Container>
       <h2> Join a Chatroom </h2>
+      <Button className="float-right" onClick={createChatroom} >Create new room</Button>
       <Accordion>
       {roomList}
         {/* <Card>
@@ -85,7 +112,20 @@ function ChatListComponent() {
           </Accordion.Collapse>
         </Card> */}
       </Accordion>
+
+
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>Invalid username or password</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
+
+    
 
 
   );
