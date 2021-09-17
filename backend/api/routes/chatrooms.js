@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Chatroom = require('../../models/chatroom.model');
+const isAdmin = require('../../lib/isAdmin');
 
 // Get all
 router.route('/').get((req, res) => {
@@ -9,7 +10,7 @@ router.route('/').get((req, res) => {
 });
 
 // Add one
-router.route('/add').post((req, res) => {
+router.route('/add').post(isAdmin,(req, res) => {
   const roomname = req.body.roomname;
   const description = req.body.description;
   const newChatroom = new Chatroom({roomname, description});
@@ -41,7 +42,7 @@ router.route('/:id').delete((req, res) => {
 });
 
 // Update (put) by ID
-router.route('/update/:id').put((req, res) => {
+router.route('/:id/update/').put((req, res) => {
   Chatroom.findById(req.params.id)
   .then(chatroom => {
     chatroom.roomname = req.body.roomname || chatroom.roomname;
@@ -53,9 +54,9 @@ router.route('/update/:id').put((req, res) => {
   })
 });
 
-// Update messages
+// Update (add) messages
 // Can only add to the message array
-router.route('/message/:id').put((req, res) => {
+router.route('/:id/message').put((req, res) => {
   Chatroom.findById(req.params.id)
   .then(chatroom => {
     chatroom.messages.push({message : req.body.message, username: "TODO"});
@@ -66,7 +67,7 @@ router.route('/message/:id').put((req, res) => {
   })
 });
 
-// need something for adding a message here
+// Get messages
 
 
 module.exports = router;

@@ -18,7 +18,7 @@ router.route('/add').post((req, res) => {
 
 // Get by ID
 // /5f4968578464d05bf0dd46b0
-router.route('/test/:id').get((req, res) => {
+router.route('/:id/test').get((req, res) => {
   console.log(req.query);
   console.log(req.params);
   User.findById(req.params.id)
@@ -27,7 +27,7 @@ router.route('/test/:id').get((req, res) => {
 });
 
 // Update by ID
-router.route('/update/:id').put((req, res) => {
+router.route('/:id/update').put((req, res) => {
   User.findById(req.params.id)
   .then(user => {
     // user.username = req.body.username || user.username;
@@ -44,7 +44,7 @@ router.route('/update/:id').put((req, res) => {
 });
 
 // Update by ID, make admin
-router.route('/update/admin/:id').put((req, res) => {
+router.route('/:id/update/admin').put((req, res) => {
   User.findById(req.params.id)
   .then(user => {
     // user.username = req.body.username || user.username;

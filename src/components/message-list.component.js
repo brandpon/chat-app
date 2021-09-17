@@ -9,6 +9,15 @@ function MessageListComponent(){
 
   // {'username':'user1','message':'hello', 'uuid': 123}
 
+  // load messages when joining chatroom
+
+  // useEffect(() => {
+  //   async function loadData (){
+
+  //   }
+  //   loadData();
+  // }, [])
+
   useEffect(() => {
     socket.on('message', (data) => {
       setMessage([data]);

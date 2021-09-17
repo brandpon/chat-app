@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import NavbarComponent from "./components/navbar.component";
 import MainComponent from "./components/main.component";
 import ChatRoomComponent from "./components/chatroom.component";
@@ -56,11 +56,11 @@ function App() {
 }
 
 // There is a problem with how I set up the AuthContext inside of Switch
-const NoMatch = () => {
-  return (
-    <div> No page here</div>
-  );
-}
+// const NoMatch = () => {
+//   return (
+//     <div> No page here</div>
+//   );
+// }
 
 
 

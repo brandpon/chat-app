@@ -28,14 +28,14 @@ function AuthComponent (props) {
   }
 
   // Send request to backend, redirect page
-  async function submitHandler(event){
-    event.preventDefault();
-    if (isLogin){
-      // this is a login attempt
-    } else{
-      // this is a registration attempt
-    }
-  }
+  // async function submitHandler(event){
+  //   event.preventDefault();
+  //   if (isLogin){
+  //     // this is a login attempt
+  //   } else{
+  //     // this is a registration attempt
+  //   }
+  // }
 
 
   return(

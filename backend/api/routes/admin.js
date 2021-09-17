@@ -63,14 +63,11 @@ router.route('/test').get((req, res) => {
   return res.status(200).send("get works");
 });
 
-
 // Get all
 router.route('/').get((req, res) => {
   User.find()
   .then(users => res.json(users))
   .catch(err => res.status(400).json('Error: ' + err));
 });
-
-
 
 module.exports = router;

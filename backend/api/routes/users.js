@@ -27,7 +27,7 @@ router.route('/register').post((req, res, next) => {
   .then(user => {
     if (user){
       console.log('Username already exists');
-      return res.status(400).json();
+      return res.status(400).json('Username already exists');
     } else {
 
       const stringToColour = utils.stringToColour(username);
@@ -66,10 +66,13 @@ router.route('/login').post((req, res, next) => {
 
     if (!user){
       console.log('User not found');
-      return res.status(401).json();
+      return res.status(401).json('Username not found');
     }
     user.comparePassword(password, (err, isMatch) => {
-      if (err){throw err;}
+      if (err){
+        console.log("Passwords don't match");
+        return res.status(401).json('Incorrect Password');
+      }
       if (isMatch){
 
         console.log("Passwords matched");

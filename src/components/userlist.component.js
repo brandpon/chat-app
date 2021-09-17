@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {socket} from '../utils/socket.io'
+import {socket} from '../utils/socket.io';
+import Container from 'react-bootstrap/Container';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 function UserListComponent(props){
 
@@ -21,8 +23,10 @@ function UserListComponent(props){
 
   return (
     <div>
-      Users:
-      <ul>{listUsers}</ul>
+      <Container fluid>
+        Users:
+        <ListGroup>{listUsers}</ListGroup>
+      </Container>
     </div>
   );
 }
